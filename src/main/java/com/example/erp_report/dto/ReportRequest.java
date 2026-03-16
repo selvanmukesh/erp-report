@@ -15,6 +15,9 @@ public class ReportRequest {
     @NotNull(message = "Order is required")
     private Long orderNo;
 
+    @NotBlank(message = "Report link is required")
+    private String link;
+
 }
 
 

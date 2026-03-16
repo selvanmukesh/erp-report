@@ -30,6 +30,7 @@ public class ReportModuleController {
     public ResponseEntity<ApiResponse<List<ReportModule>>> saveAllReportModule(
             @Valid @RequestBody List<ReportModuleRequest> request) {
         try {
+            
             List<ReportModule> reportList = reportModuleService.saveAllReportModule(request);
             ApiResponse<List<ReportModule>> response = new ApiResponse<List<ReportModule>>(reportList, null,
                     HttpStatus.CREATED.value(),

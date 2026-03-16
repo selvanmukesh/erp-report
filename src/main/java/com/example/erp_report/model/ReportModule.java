@@ -11,11 +11,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "report_module")
+@Table(
+    name = "report_module",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "uk_report_module_report_name_order",
+            columnNames = {"report_id", "name"}
+        )
+    }
+)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

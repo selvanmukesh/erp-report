@@ -16,13 +16,15 @@ public class ReportService {
     private ReportRepository reportRepository;
 
     public Report saveReport(ReportRequest request) throws Exception {
-        Report report = new Report(null, null, null, null);
+        Report report = new Report();
         report.setName(request.getName());
         report.setOrderNo(request.getOrderNo());
+        report.setLink(request.getLink());
 
         Report reportResponse = reportRepository.save(report);
         return reportResponse;
     }
+
     public List<Report> getAllReport() throws Exception {
         return reportRepository.findAll();
     }

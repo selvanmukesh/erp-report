@@ -33,8 +33,13 @@ public class Report {
     @Column(name = "order_no", nullable = false, unique = true)
     private Long orderNo;
 
+    @Column(name = "link", nullable = false, unique = true)
+    private String link;
+
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<ReportModule> reportModule;
+
+
 
 }

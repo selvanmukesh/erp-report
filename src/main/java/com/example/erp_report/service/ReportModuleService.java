@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.erp_report.dto.ReportModuleProjection;
 import com.example.erp_report.dto.ReportModuleRequest;
 import com.example.erp_report.model.Report;
 import com.example.erp_report.model.ReportModule;
@@ -20,6 +22,8 @@ public class ReportModuleService {
         for (ReportModuleRequest item : request) {
             ReportModule reportModule = new ReportModule();
             Report report = new Report();
+            if (item.getId() != null)
+                report.setId(item.getId());
             report.setId(item.getReportId());
             reportModule.setName(item.getName());
             reportModule.setOrderNo(item.getOrderNo());
@@ -35,6 +39,21 @@ public class ReportModuleService {
             throws Exception {
         return reportModuleRepository.findAllReportModuleNotInInPactedModule();
 
+    }
+
+    public List<ReportModule> findReportModuleById()
+            throws Exception {
+        return reportModuleRepository.findAllReportModuleNotInInPactedModule();
+
+    }
+
+    public List<ReportModuleProjection> findReportModuleById(Long id) throws Exception {
+        return reportModuleRepository.findReportModuleById(id);
+    }
+
+    public String deleteById(Long id) throws Exception {
+        reportModuleRepository.deleteById(id);
+        return "Updated Successfully";
     }
 
 }

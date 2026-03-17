@@ -31,8 +31,7 @@ public class ReportService {
 
     public List<Report> getAllReport() throws Exception {
         return reportRepository.findAll(
-            Sort.by(Sort.Direction.ASC,"orderNo")
-        );
+                Sort.by(Sort.Direction.ASC, "orderNo"));
     }
 
     public List<ReportResponse> getAllReportTableDataOnly() throws Exception {
@@ -52,6 +51,11 @@ public class ReportService {
         reportRepository.saveAll(bulkUpdateData);
         return "Updated Success fully";
 
+    }
+
+    public String deleteById(Long id) throws Exception {
+        reportRepository.deleteById(id);
+        return "Updated Successfully";
     }
 
 }

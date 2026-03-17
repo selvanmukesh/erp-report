@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,6 +85,23 @@ public class ReportController {
             String message = reportService.bulkUpdateReport(updateRequest);
             ApiResponse<String> response = new ApiResponse<>(message, null, HttpStatus.CREATED.value(),
                     "Updated");
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            ApiResponse<String> response = new ApiResponse<>(null, e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<String>> deleteById(@PathVariable Long id) {
+        try {
+            String reportList = reportService.deleteById(id);
+            ApiResponse<String> response = new ApiResponse<String>(
+                    reportList, null,
+                    HttpStatus.CREATED.value(),
+                    "Success");
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {

@@ -7,7 +7,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ReportUpdateRequest {
+public class ReportModuleUpdateRequest {
+
     @NotNull(message = "Id is required")
     private Long id;
 
@@ -17,7 +18,6 @@ public class ReportUpdateRequest {
     @NotNull(message = "Order is required")
     private Long orderNo;
 
-    @NotBlank(message = "Report link is required")
-    private String link;
+    private Long impactModuleId;
 
 }

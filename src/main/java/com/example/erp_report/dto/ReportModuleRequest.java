@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class ReportModuleRequest {
 
+    private Long id;
+
     @NotBlank(message = "Module name is required")
     private String name;
 

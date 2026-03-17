@@ -22,9 +22,14 @@ public class ReportModuleService {
         for (ReportModuleRequest item : request) {
             ReportModule reportModule = new ReportModule();
             Report report = new Report();
-            if (item.getId() != null)
-                report.setId(item.getId());
-            report.setId(item.getReportId());
+            if (item.getReportId() != null) {
+                report.setId(item.getReportId());
+            }
+
+            if (item.getId() != null) {
+                reportModule.setId(item.getId());
+            }
+
             reportModule.setName(item.getName());
             reportModule.setOrderNo(item.getOrderNo());
             reportModule.setImpactModuleId(item.getImpactModuleId());
@@ -37,12 +42,15 @@ public class ReportModuleService {
 
     public List<ReportModule> findAllReportModuleNotInInPactedModule()
             throws Exception {
-        return reportModuleRepository.findAllReportModuleNotInInPactedModule();
+
+        // return reportModuleRepository.findAllReportModuleNotInInPactedModule();
+        return reportModuleRepository.findByImpactModuleIdIsNull();
 
     }
 
     public List<ReportModule> findReportModuleById()
             throws Exception {
+
         return reportModuleRepository.findAllReportModuleNotInInPactedModule();
 
     }

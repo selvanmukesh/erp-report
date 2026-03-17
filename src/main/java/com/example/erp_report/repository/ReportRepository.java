@@ -12,7 +12,7 @@ import com.example.erp_report.model.Report;
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
-    @Query("SELECT r.id as id, r.name as name, r.orderNo as orderNo,r.link as link FROM Report r order by r.orderNo ")
+    @Query("SELECT r.id, r.name, r.orderNo,r.link FROM Report r order by r.orderNo ")
     List<ReportResponse> getAllReport();
 
 }

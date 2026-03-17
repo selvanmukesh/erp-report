@@ -18,14 +18,14 @@ public interface ReportModuleRepository extends JpaRepository<ReportModule, Long
 
     @Query(value = """
             SELECT
-                r.report_name AS report_name,
-                r.order_no AS report_order_no,
-                rm.name AS module_name,
-                rm.order_no AS module_order,
-                rmn.name AS impact_module_name,
-                rm.impact_module_id,
-                rm.id AS module_id,
-                r.id AS report_id
+                r.report_name AS reportName,
+                r.order_no AS reportOrderNo,
+                rm.name AS moduleName,
+                rm.order_no AS moduleOrder,
+                rmn.name AS impactModuleName,
+                rm.impact_module_id AS impactModuleId,
+                rm.id AS moduleId,
+                r.id AS reportId
             FROM report r
             LEFT JOIN report_module rm ON r.id = rm.report_id
             LEFT JOIN report_module rmn ON rmn.id = rm.impact_module_id
@@ -34,5 +34,6 @@ public interface ReportModuleRepository extends JpaRepository<ReportModule, Long
             """, nativeQuery = true)
 
     List<ReportModuleProjection> findReportModuleById(@Param("id") Long id);
+    List<ReportModule> findByImpactModuleIdIsNull();
 
 }

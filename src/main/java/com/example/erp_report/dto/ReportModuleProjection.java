@@ -1,18 +1,18 @@
 package com.example.erp_report.dto;
 
-public interface ReportModuleProjection {
-    String getReportName();
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    Long getReportOrderNo();
 
-    String getModuleName();
-
-    Long getModuleOrder();
-
-    String getImpactModuleName();
-
-    Long getImpactModuleId();
-
-    Long getModuleId();
-    Long getReportId();
+@AllArgsConstructor
+@Getter
+public class ReportModuleProjection {
+    private String reportName;
+    private Long reportOrderNo;
+    private String moduleName;
+    private Long moduleOrder;
+    private String impactModuleName;
+    private Long impactModuleId;
+    private Long moduleId;
+    private Long reportId;
 }

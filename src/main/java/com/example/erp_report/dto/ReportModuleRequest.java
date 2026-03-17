@@ -17,6 +17,6 @@ public class ReportModuleRequest {
 
     private Long impactModuleId; // null allowed
 
-    @NotNull(message = "Report Id is required")
+    // @NotNull(message = "Report Id is required")
     private Long reportId;
 }

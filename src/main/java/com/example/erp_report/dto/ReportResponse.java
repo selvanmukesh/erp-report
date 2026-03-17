@@ -1,11 +1,13 @@
 package com.example.erp_report.dto;
 
-public interface ReportResponse {
-    String getName();
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    Long getId();
-
-    Long getOrderNo();
-
-    String getLink();
+@AllArgsConstructor
+@Getter
+public class ReportResponse {
+    private Long id;
+    private String name;
+    private Long OrderNo;
+    private String link;
 }

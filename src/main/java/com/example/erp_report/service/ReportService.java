@@ -19,14 +19,17 @@ public class ReportService {
     @Autowired
     private ReportRepository reportRepository;
 
-    public Report saveReport(ReportRequest request) throws Exception {
-        Report report = new Report();
-        report.setName(request.getName());
-        report.setOrderNo(request.getOrderNo());
-        report.setLink(request.getLink());
-
-        Report reportResponse = reportRepository.save(report);
-        return reportResponse;
+    public List<Report> saveReport(List<ReportRequest> request) throws Exception {
+        List<Report> saveAllReport = new ArrayList<>();
+        for (ReportRequest item : request) {
+            Report report = new Report();
+            report.setId(item.getId());
+            report.setName(item.getName());
+            report.setOrderNo(item.getOrderNo());
+            report.setLink(item.getLink());
+            saveAllReport.add(report);
+        }
+        return reportRepository.saveAll(saveAllReport);
     }
 
     public List<Report> getAllReport() throws Exception {

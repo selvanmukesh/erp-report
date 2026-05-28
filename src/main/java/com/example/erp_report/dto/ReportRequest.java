@@ -8,7 +8,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ReportRequest {
-    
+    private Long id;
+
     @NotBlank(message = "Report name is required")
     private String name;
 
@@ -19,5 +20,3 @@ public class ReportRequest {
     private String link;
 
 }
-
-

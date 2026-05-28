@@ -35,15 +35,15 @@ public class ReportController {
     ReportService reportService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Report>> postMethodName(@Valid @RequestBody ReportRequest request) {
+    public ResponseEntity<ApiResponse<List<Report>>> postMethodName(@Valid @RequestBody List<ReportRequest> request) {
         try {
-            Report report = reportService.saveReport(request);
-            ApiResponse<Report> response = new ApiResponse<Report>(report, null, HttpStatus.CREATED.value(),
+            List<Report> report = reportService.saveReport(request);
+            ApiResponse<List<Report>> response = new ApiResponse<List<Report>>(report, null, HttpStatus.CREATED.value(),
                     "Created Success Fully");
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
-            ApiResponse<Report> response = new ApiResponse<Report>(null, e.getMessage(),
+            ApiResponse<List<Report>> response = new ApiResponse<List<Report>>(null, e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }

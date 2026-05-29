@@ -37,7 +37,7 @@ public class ReportModuleController {
             List<ReportModule> reportList = reportModuleService.saveAllReportModule(request);
             ApiResponse<List<ReportModule>> response = new ApiResponse<List<ReportModule>>(reportList, null,
                     HttpStatus.CREATED.value(),
-                    "Created Success Fully");
+                    "Saved Success Fully");
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -52,10 +52,10 @@ public class ReportModuleController {
         try {
             List<ReportModule> reportList = reportModuleService.findAllReportModuleNotInInPactedModule();
             ApiResponse<List<ReportModule>> response = new ApiResponse<List<ReportModule>>(reportList, null,
-                    HttpStatus.CREATED.value(),
+                    HttpStatus.OK.value(),
                     "Success");
 
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             ApiResponse<List<ReportModule>> response = new ApiResponse<>(null, e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed");
@@ -69,10 +69,10 @@ public class ReportModuleController {
             List<ReportModuleProjection> reportList = reportModuleService.findReportModuleById(id);
             ApiResponse<List<ReportModuleProjection>> response = new ApiResponse<List<ReportModuleProjection>>(
                     reportList, null,
-                    HttpStatus.CREATED.value(),
+                    HttpStatus.OK.value(),
                     "Success");
 
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             ApiResponse<List<ReportModuleProjection>> response = new ApiResponse<>(null, e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed");

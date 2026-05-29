@@ -13,6 +13,6 @@ public class ReportModuleProjection {
     private Long moduleOrder;
     private String impactModuleName;
     private Long impactModuleId;
-    private Long moduleId;
+    private Long id;
     private Long reportId;
 }

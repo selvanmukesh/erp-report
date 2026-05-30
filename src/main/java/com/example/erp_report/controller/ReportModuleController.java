@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.erp_report.common.ApiResponse;
+import com.example.erp_report.dto.ImpactModuleProjection;
+import com.example.erp_report.dto.ReportInfoProjection;
 import com.example.erp_report.dto.ReportModuleProjection;
 import com.example.erp_report.dto.ReportModuleRequest;
 import com.example.erp_report.model.ReportModule;
@@ -48,16 +50,16 @@ public class ReportModuleController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ReportModule>>> findAllReportModuleNotInInPactedModule() {
+    public ResponseEntity<ApiResponse<List<ImpactModuleProjection>>> findAllReportModuleNotInInPactedModule() {
         try {
-            List<ReportModule> reportList = reportModuleService.findAllReportModuleNotInInPactedModule();
-            ApiResponse<List<ReportModule>> response = new ApiResponse<List<ReportModule>>(reportList, null,
+            List<ImpactModuleProjection> reportList = reportModuleService.findAllReportModuleNotInInPactedModule();
+            ApiResponse<List<ImpactModuleProjection>> response = new ApiResponse<List<ImpactModuleProjection>>(reportList, null,
                     HttpStatus.OK.value(),
                     "Success");
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse<List<ReportModule>> response = new ApiResponse<>(null, e.getMessage(),
+            ApiResponse<List<ImpactModuleProjection>> response = new ApiResponse<>(null, e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -92,6 +94,23 @@ public class ReportModuleController {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             ApiResponse<String> response = new ApiResponse<>(null, e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/reportInfo")
+    public ResponseEntity<ApiResponse<List<ReportInfoProjection>>> getReportInfoProjection() {
+        try {
+            List<ReportInfoProjection> reportList = reportModuleService.getReportInfoProjection();
+            ApiResponse<List<ReportInfoProjection>> response = new ApiResponse<List<ReportInfoProjection>>(
+                    reportList, null,
+                    HttpStatus.OK.value(),
+                    "Success");
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponse<List<ReportInfoProjection>> response = new ApiResponse<>(null, e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.erp_report.dto.ImpactModuleProjection;
+import com.example.erp_report.dto.ReportInfoProjection;
 import com.example.erp_report.dto.ReportModuleProjection;
 import com.example.erp_report.dto.ReportModuleRequest;
 import com.example.erp_report.model.Report;
@@ -40,7 +42,7 @@ public class ReportModuleService {
         return result;
     }
 
-    public List<ReportModule> findAllReportModuleNotInInPactedModule()
+    public List<ImpactModuleProjection> findAllReportModuleNotInInPactedModule()
             throws Exception {
 
         // return reportModuleRepository.findAllReportModuleNotInInPactedModule();
@@ -62,6 +64,10 @@ public class ReportModuleService {
     public String deleteById(Long id) throws Exception {
         reportModuleRepository.deleteById(id);
         return "Updated Successfully";
+    }
+
+    public List<ReportInfoProjection> getReportInfoProjection() {
+        return reportModuleRepository.getReportInfoProjection();
     }
 
 }

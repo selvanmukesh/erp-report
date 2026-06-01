@@ -135,7 +135,7 @@ public class ReportModuleController {
         HttpHeaders headers = new HttpHeaders();
         headers.add(
                 "Content-Disposition",
-                "attachment; filename=employees.xlsx");
+                "attachment; filename=reportInfo.xlsx");
 
         return ResponseEntity.ok()
                 .headers(headers)

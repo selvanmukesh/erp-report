@@ -1,9 +1,14 @@
 package com.example.erp_report.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +23,7 @@ import com.example.erp_report.dto.ReportInfoProjection;
 import com.example.erp_report.dto.ReportModuleProjection;
 import com.example.erp_report.dto.ReportModuleRequest;
 import com.example.erp_report.model.ReportModule;
+import com.example.erp_report.service.ExcelExportService;
 import com.example.erp_report.service.ReportModuleService;
 
 import jakarta.validation.Valid;
@@ -30,6 +36,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class ReportModuleController {
     @Autowired
     ReportModuleService reportModuleService;
+    @Autowired
+    private ExcelExportService excelExportService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<List<ReportModule>>> saveAllReportModule(
@@ -53,7 +61,8 @@ public class ReportModuleController {
     public ResponseEntity<ApiResponse<List<ImpactModuleProjection>>> findAllReportModuleNotInInPactedModule() {
         try {
             List<ImpactModuleProjection> reportList = reportModuleService.findAllReportModuleNotInInPactedModule();
-            ApiResponse<List<ImpactModuleProjection>> response = new ApiResponse<List<ImpactModuleProjection>>(reportList, null,
+            ApiResponse<List<ImpactModuleProjection>> response = new ApiResponse<List<ImpactModuleProjection>>(
+                    reportList, null,
                     HttpStatus.OK.value(),
                     "Success");
 
@@ -114,6 +123,26 @@ public class ReportModuleController {
                     HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/reportInfo/download")
+    public ResponseEntity<InputStreamResource> downloadExcel()
+            throws IOException {
+        List<ReportInfoProjection> reportList = reportModuleService.getReportInfoProjection();
+
+        ByteArrayInputStream in = excelExportService.exportReportInfo(reportList);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(
+                "Content-Disposition",
+                "attachment; filename=employees.xlsx");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(
+                        MediaType.parseMediaType(
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(new InputStreamResource(in));
     }
 
 }

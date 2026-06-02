@@ -1,5 +1,6 @@
 package com.example.erp_report.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,8 +24,8 @@ public interface ReportModuleRepository extends JpaRepository<ReportModule, Long
                 r.report_name AS reportName,
                 r.order_no AS reportOrderNo,
                 rm.name AS moduleName,
-                rm.order_no AS moduleOrder,
-                rmn.name AS impactModuleName,
+                rm.order_no AS orderNo,
+                rmn.name,
                 rm.impact_module_id AS impactModuleId,
                 rm.id,
                 r.id AS reportId

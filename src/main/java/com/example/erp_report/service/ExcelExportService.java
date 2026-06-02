@@ -3,6 +3,8 @@ package com.example.erp_report.service;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,6 +17,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import com.example.erp_report.dto.ReportInfoProjection;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ExcelExportService {
@@ -72,6 +76,76 @@ public class ExcelExportService {
         for (int i = 0; i < 6; i++) {
             sheet.autoSizeColumn(i);
             // sheet.setColumnWidth(i, sheet.getColumnWidth(i) + 20);
+        }
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        workbook.write(out);
+        workbook.close();
+
+        return new ByteArrayInputStream(out.toByteArray());
+    }
+
+    public ByteArrayInputStream exportDataAsExcel(String inputData) throws IOException {
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Report");
+
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+
+        CellStyle headerStyle = workbook.createCellStyle();
+        headerStyle.setFont(headerFont);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode root = objectMapper.readTree(inputData);
+
+        if (!root.isArray() || root.size() == 0) {
+            return new ByteArrayInputStream(new byte[0]);
+        }
+
+        // Create Header Row
+        Row headerRow = sheet.createRow(0);
+
+        JsonNode firstItem = root.get(0);
+
+        List<String> columns = new ArrayList<>();
+
+        int colNum = 0;
+        Iterator<String> fields = firstItem.fieldNames();
+
+        while (fields.hasNext()) {
+            String field = fields.next();
+
+            columns.add(field);
+
+            Cell cell = headerRow.createCell(colNum++);
+            cell.setCellValue(field);
+            cell.setCellStyle(headerStyle);
+        }
+
+        // Create Data Rows
+        int rowNum = 1;
+
+        for (JsonNode item : root) {
+
+            Row row = sheet.createRow(rowNum++);
+
+            for (int i = 0; i < columns.size(); i++) {
+
+                String field = columns.get(i);
+
+                JsonNode value = item.get(field);
+
+                row.createCell(i)
+                        .setCellValue(value == null || value.isNull()
+                                ? ""
+                                : value.asText());
+            }
+        }
+
+        // Auto size columns
+        for (int i = 0; i < columns.size(); i++) {
+            sheet.autoSizeColumn(i);
         }
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();

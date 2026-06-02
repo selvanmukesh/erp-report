@@ -9,8 +9,8 @@ import lombok.Getter;
 public class ReportModuleProjection {
     private String reportName;
     private Long reportOrderNo;
-    private String moduleName;
-    private Long moduleOrder;
+    private String name;
+    private Long orderNo;
     private String impactModuleName;
     private Long impactModuleId;
     private Long id;

@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class ReportInfoProjection {
     private String reportName;
-    private String Link;
+    private String link;
     private String moduleName;
     private String impactedDashboard;
     private Long impactModuleId;

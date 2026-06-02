@@ -2,6 +2,7 @@ package com.example.erp_report.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import com.example.erp_report.dto.ReportModuleRequest;
 import com.example.erp_report.model.ReportModule;
 import com.example.erp_report.service.ExcelExportService;
 import com.example.erp_report.service.ReportModuleService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -130,7 +132,10 @@ public class ReportModuleController {
             throws IOException {
         List<ReportInfoProjection> reportList = reportModuleService.getReportInfoProjection();
 
-        ByteArrayInputStream in = excelExportService.exportReportInfo(reportList);
+        // ByteArrayInputStream in = excelExportService.exportReportInfo(reportList);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(reportList);
+        ByteArrayInputStream in = excelExportService.exportDataAsExcel(json);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(

@@ -2,6 +2,8 @@ package com.example.erp_report.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,12 +137,13 @@ public class ReportModuleController {
         // ByteArrayInputStream in = excelExportService.exportReportInfo(reportList);
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(reportList);
-        ByteArrayInputStream in = excelExportService.exportDataAsExcel(json);
-
+        ByteArrayInputStream in = excelExportService.exportDataAsExcel(json, "Report");
+        String timestamp = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss"));
         HttpHeaders headers = new HttpHeaders();
         headers.add(
                 "Content-Disposition",
-                "attachment; filename=reportInfo.xlsx");
+                "attachment; filename=reportInfo_" + timestamp + ".xlsx");
 
         return ResponseEntity.ok()
                 .headers(headers)

@@ -85,10 +85,10 @@ public class ExcelExportService {
         return new ByteArrayInputStream(out.toByteArray());
     }
 
-    public ByteArrayInputStream exportDataAsExcel(String inputData) throws IOException {
+    public ByteArrayInputStream exportDataAsExcel(String inputData,String workBookName) throws IOException {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Report");
+        Sheet sheet = workbook.createSheet(workBookName);
 
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);

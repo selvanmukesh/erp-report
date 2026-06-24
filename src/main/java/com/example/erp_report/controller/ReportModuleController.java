@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -31,17 +32,19 @@ import com.example.erp_report.service.ReportModuleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/reportModule")
+@RequiredArgsConstructor
 public class ReportModuleController {
-    @Autowired
-    ReportModuleService reportModuleService;
-    @Autowired
-    private ExcelExportService excelExportService;
+    private final ReportModuleService reportModuleService;
+    private final ExcelExportService excelExportService;
+
 
     @PostMapping
     public ResponseEntity<ApiResponse<List<ReportModule>>> saveAllReportModule(
@@ -124,6 +127,24 @@ public class ReportModuleController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             ApiResponse<List<ReportInfoProjection>> response = new ApiResponse<>(null, e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @GetMapping("/reportInfoT")
+    public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getReportInfoProjectionTest() {
+        try {
+            List<Map<String, Object>> reportList = reportModuleService.getReportInfoProjectionTest();
+            ApiResponse<List<Map<String, Object>>> response = new ApiResponse<List<Map<String, Object>>>(
+                    reportList, null,
+                    HttpStatus.OK.value(),
+                    "Success");
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponse<List<Map<String, Object>>> response = new ApiResponse<>(null, e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }

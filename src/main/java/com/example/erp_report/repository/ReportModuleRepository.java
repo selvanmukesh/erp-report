@@ -86,5 +86,39 @@ public interface ReportModuleRepository extends JpaRepository<ReportModule, Long
             ORDER BY report_order_id, report_module_order_id;
                         """, nativeQuery = true)
     List<ReportInfoProjection> getReportInfoProjection();
+    @Query(value = """
+        WITH report_cte AS (
+SELECT
+    MIN(rm.id) OVER (PARTITION BY r.report_name) = rm.id AS unique_report_name_helper,
+    r.report_name,
+    r.link,
+    rm.name AS module_name,
+    (
+        SELECT rma.name
+        FROM report_module rma
+        WHERE rm.impact_module_id = rma.id
+    ) AS impacted_dashboard,
+    rm.id AS report_module_id,
+    rm.impact_module_id,
+    r.id AS report_id,
+    r.order_no AS report_order_id,
+    rm.order_no AS report_module_order_id
+FROM report_module rm
+LEFT JOIN report r
+    ON rm.report_id = r.id
+)
+SELECT
+report_name,
+CASE
+    WHEN unique_report_name_helper THEN link
+END AS link,
+module_name,
+impacted_dashboard,
+impact_module_id,
+report_module_id
+FROM report_cte
+ORDER BY report_order_id, report_module_order_id;
+        """, nativeQuery = true)
+List<Object> getReportInfoProjectionTest();
 
 }

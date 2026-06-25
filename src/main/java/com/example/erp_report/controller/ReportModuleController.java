@@ -153,7 +153,9 @@ public class ReportModuleController {
     @GetMapping("/reportInfo/download")
     public ResponseEntity<InputStreamResource> downloadExcel()
             throws IOException {
-        List<ReportInfoProjection> reportList = reportModuleService.getReportInfoProjection();
+        // List<ReportInfoProjection> reportList = reportModuleService.getReportInfoProjection();
+        List<Map<String, Object>> reportList = reportModuleService.getReportInfoProjectionTest();
+
 
         // ByteArrayInputStream in = excelExportService.exportReportInfo(reportList);
         ObjectMapper mapper = new ObjectMapper();

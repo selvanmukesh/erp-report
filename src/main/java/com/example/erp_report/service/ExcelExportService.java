@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.example.erp_report.dto.ReportInfoProjection;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.poi.ss.usermodel.Hyperlink;
 
 @Service
 public class ExcelExportService {
@@ -85,7 +87,7 @@ public class ExcelExportService {
         return new ByteArrayInputStream(out.toByteArray());
     }
 
-    public ByteArrayInputStream exportDataAsExcel(String inputData,String workBookName) throws IOException {
+    public ByteArrayInputStream exportDataAsExcel(String inputData, String workBookName) throws IOException {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet(workBookName);
@@ -136,10 +138,25 @@ public class ExcelExportService {
 
                 JsonNode value = item.get(field);
 
-                row.createCell(i)
-                        .setCellValue(value == null || value.isNull()
-                                ? ""
-                                : value.asText());
+                String text = value == null || value.isNull()
+                        ? ""
+                        : value.asText();
+
+                Cell cell = row.createCell(i);
+                cell.setCellValue(text);
+
+                // Add hyperlink to every non-empty cell
+                if (!text.isEmpty() && text.endsWith("link")) {
+                    String[] builtwithLinkText = text.split(";");
+                    if (builtwithLinkText.length >= 3) {
+                        cell.setCellValue(builtwithLinkText[0]);
+                        Hyperlink link = workbook.getCreationHelper()
+                                .createHyperlink(HyperlinkType.URL);
+                        link.setAddress(builtwithLinkText[builtwithLinkText.length - 2]);
+                        cell.setHyperlink(link);
+                    }
+
+                }
             }
         }
 
